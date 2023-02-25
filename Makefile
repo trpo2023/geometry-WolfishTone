@@ -1,5 +1,3 @@
-.PHONY : all
-hello : hello.c
+main: hello.c geometry.c
 	gcc -Wall -Werror hello.c -o hello
-geometry : geometry.c
-	gcc -Wall geometry.c -o geometry
+	gcc -Wall -Werror geometry.c -o geometry
