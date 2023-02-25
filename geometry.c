@@ -80,7 +80,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
         printf("syntax_check ERROR(строка %d): ошибка в названии фигуры. "
                "Ожидалосось: \"circle\", \"triangle\"\n",
                column);
-        for (; str[i] != 10; i++) // до следующей строки
+        for (; str[i] != 10 || str[i]!= ';'; i++) // до следующей строки
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении названия фигуры\n",
@@ -100,7 +100,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
         printf(
             "syntax_check ERROR(строка %d): ожидалась открывающая скобка '('\n",
             column);
-        for (; str[i] != 10; i++) // до следующей строки
+        for (; str[i] != 10 || str[i]!= ';'; i++) // до следующей строки
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении открывающей скобки '('\n",
@@ -125,8 +125,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
         printf("syntax_check ERROR(строка %d): первый аргумент в скобках не "
                "число\n",
                column);
-        for (; str[i] != 10; i++) {
-          printf(" %d\n", i);
+        for (; str[i] != 10 || str[i]!= ';'; i++) {
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении первого аргумента в скобках\n",
@@ -164,7 +163,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
           printf("syntax_check ERROR(строка %d): второй аргумент в скобках не "
                  "число\n",
                  column);
-        for (; str[i] != 10; i++)
+        for (; str[i] != 10 || str[i]!=';'; i++)
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении второго аргумента в скобках\n",
@@ -194,7 +193,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
       {
         printf("syntax_check ERROR(строка %d): ожидалась запятая ','\n",
                column);
-        for (; str[i] != 10; i++) // до следующей строки
+        for (; str[i] != 10 || str[i]!= ';'; i++) // до следующей строки
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении запятой ','\n",
@@ -221,8 +220,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
           printf("syntax_check ERROR(строка %d): третий аргумент в скобках не "
                  "число\n",
                  column);
-        for (; str[i] != 10; i++) {
-          printf(" %d\n", i);
+        for (; str[i] != 10 || str[i]!= ';'; i++) {
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении третьего аргумента в скобках\n",
@@ -254,7 +252,7 @@ _Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl,
         printf(
             "syntax_check ERROR(строка %d): ожидалась закрывающая скобка ')'\n",
             column);
-        for (; str[i] != 10; i++) // до следующей строки
+        for (; str[i] != 10 || str[i]!=';'; i++) // до следующей строки
           if (str[i] == '\0') {
             printf("syntax_check ERROR(строка %d): строка закончилась на "
                    "введении закрывающей скобки ')'\n",
