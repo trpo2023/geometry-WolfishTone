@@ -27,6 +27,6 @@ int main(int argc, char *argv[])
   	printf("============================\n");
 	printf("корректно введенные фигуры\n");
   	for (int i = 0; i < circle_mas_size; i++)
-    		printf("circle (%d %d, %d)\n", circle_mas[i].point1.x, circle_mas[i].point1.y, circle_mas[i].radius);
+    		printf("circle (%d %d, %f)\n", circle_mas[i].point1.x, circle_mas[i].point1.y, circle_mas[i].radius);
 	return 0;
 }

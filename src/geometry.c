@@ -33,6 +33,7 @@ _Bool inp_from_file(int argc, char **argv, char *str, int *str_size) // ввод
 			*str_size+=1;
 		}
 		fclose(input_file); // закрываем файл
+		*str_size+=1;
 		if (arg_index!=argc-1)
 			str[*str_size-1]= '\n';
 	}
@@ -67,7 +68,7 @@ short fig_name_check(char *str, int *i, char *figure, int figure_size) // про
 int num_check(char* str, int *i, int* column, _Bool is_negative, _Bool is_float)// проверяет число ли строка
 {
 	int j, k, i_base;
-	int num_i= (str[*i]== '-' && is_negative)?(*i+1):(*i);
+	int num_i= (str[*i]== '-' && is_negative)?(*i+1):(*i);// проверка 
 	for (j = 0; j < NUMBERS; j++)
 		if (str[num_i] == j + 48)
 			break;
@@ -83,7 +84,12 @@ int num_check(char* str, int *i, int* column, _Bool is_negative, _Bool is_float)
 	*i+=1;
 	for (;;) 
 	{
-		for (k = 0; k < 10; k++)// скипаем остатки числа
+		if (str[*i]== '.'&& is_float)
+		{
+			is_float= 0;
+			*i+=1;
+		}
+		for (k = 0; k < NUMBERS; k++)// скипаем остатки числа
 			if (str[*i] == k + 48) 
 			{
 				*i+=1;
@@ -182,7 +188,7 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 				if(num_i== 2)
 					return 0;
 				else
-					circle_mas[*circle_mas_size].radius = atoi(&str[num_i]);
+					circle_mas[*circle_mas_size].radius = atof(&str[num_i]);
 			}
 			else
 			{

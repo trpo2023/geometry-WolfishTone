@@ -6,7 +6,7 @@ typedef struct {
 typedef struct
 {
 	Coordinates point1;
-	int radius;
+	float radius;
 } Circle;
 
 typedef struct
