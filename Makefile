@@ -1,3 +1,11 @@
-main: hello.c geometry.c
-	gcc -Wall -Werror hello.c -o hello
-	gcc -Wall -Werror geometry.c -o geometry
+.PHONY: all clean test
+all: geometry
+geometry:  geometry.o main.o
+	gcc -Wall -Werror $^ -o $@
+geometry.o: src/geometry.c
+	gcc -Wall -Werror -c $^ -o $@
+main.o: src/main.c
+	gcc -Wall -Werror -c $^ -o $@
+clean:
+	rm *.o
+	rm geometry
