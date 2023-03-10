@@ -3,7 +3,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "figures.h"
+
+//== для num_check
 #define NUMBERS 10
+#define NEGATIVE 1
+#define POSITIVE 0   
+#define FLOAT 1
+#define INT 0
+#define ASCII_COOFICIENT 48
 
 _Bool inp_from_file(int argc, char **argv, char *str, int *str_size) // ввод из файла
 {
@@ -70,7 +77,7 @@ int num_check(char* str, int *i, int* column, _Bool is_negative, _Bool is_float)
 	int j, k, i_base;
 	int num_i= (str[*i]== '-' && is_negative)?(*i+1):(*i);// проверка 
 	for (j = 0; j < NUMBERS; j++)
-		if (str[num_i] == j + 48)
+		if (str[num_i] == j + ASCII_COOFICIENT)
 			break;
 	if (j == 10)
 	{
@@ -90,7 +97,7 @@ int num_check(char* str, int *i, int* column, _Bool is_negative, _Bool is_float)
 			*i+=1;
 		}
 		for (k = 0; k < NUMBERS; k++)// скипаем остатки числа
-			if (str[*i] == k + 48) 
+			if (str[*i] == k + ASCII_COOFICIENT) 
 			{
 				*i+=1;
 				break;
@@ -102,7 +109,7 @@ int num_check(char* str, int *i, int* column, _Bool is_negative, _Bool is_float)
 }
 void print_wrong_string(char* str, int error_i, int i)
 {
-	for(int k= error_i;str[k]!=10;k++)// вывод провинившейся перед синтаксисом строки
+	for(int k= error_i;str[k]!='\n';k++)// вывод провинившейся перед синтаксисом строки
 		printf("%c", str[k]);
 	printf("\n");
 	for(int k= error_i;k<i;k++)// пробелы и стрелочка для указания на ошибку
@@ -116,7 +123,7 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 	int i = 0, num_i, error_i; // i_base- первый байт числа error_i- индекс ошибки в строке
 	for (; i < str_size; i++) // идем по строке
 	{
-		bp: error_i= i;
+	        error_i= i;
 		if (str[i] == 'c') //============ ищем круг
 		{
 			short is_figure = fig_name_check(str, &i, "circle\0", 6); // 1- ошибка ввода; 2- конец строки
@@ -126,29 +133,29 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 			{
 				print_wrong_string(str, error_i, i);
 				printf("syntax_check ERROR(строка %d): ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\n", column);
-				for (; str[i] != 10; i++) // до следующей строки
+				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
             					return 0;
 				column++;
-				goto bp;
+				continue;
 			}
 			for (; str[i] == ' '; i++); // пропуск пробелов
 			if (str[i] != '(') //=================== ищем открывающую скобку
 			{
 				print_wrong_string(str, error_i, i);
 				printf("syntax_check ERROR(строка %d): ожидалась открывающая скобка '('\n",column);
-				for (; str[i] != 10; i++) // до следующей строки
+				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
 				column++;
-				goto bp;
+				continue;
 			}
       			i++; // выйти за скобку
 			for (; str[i] == ' '; i++); // пропуск пробелов
 			
 			for (short g= 1; g<=2;g++) // ================= ищем первые 2 аргумента в скобках
 			{
-				num_i= num_check(str, &i, &column, 1, 0);
+				num_i= num_check(str, &i, &column, NEGATIVE, INT);
 				if (num_i)
 				{
 					if(num_i== 2)
@@ -164,7 +171,7 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 				{
 					print_wrong_string(str, error_i, i);
 					printf("syntax_check ERROR(строка %d): первый аргумент в скобках не число\n",column);
-					goto bp;
+					continue;
 				}
 				for (; str[i] == ' '; i++); // пропуск пробелов
 			}
@@ -173,16 +180,16 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 			{
 				print_wrong_string(str, error_i, i);
 				printf("syntax_check ERROR(строка %d): ожидалась запятая ','\n",column);
-				for (; str[i] != 10; i++) // до следующей строки
+				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
 				column++;
-				goto bp;
+				continue;
 			}
       			i++; // выйти за запятую
       			for (; str[i] == ' '; i++); // пропуск пробелов
 
-      			num_i= num_check(str, &i, &column, 0, 1);//========================== ищем третий аргумент в скобках
+      			num_i= num_check(str, &i, &column, POSITIVE, FLOAT);//========================== ищем третий аргумент в скобках
      			if (num_i)
 			{
 				if(num_i== 2)
@@ -194,7 +201,7 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 			{
 				print_wrong_string(str, error_i, i);
 	      			printf("syntax_check ERROR(строка %d): третий аргумент в скобках не число\n",column);
-	      			goto bp;
+				continue;
 			}
       			for (; str[i] == ' '; i++); // пропуск пробелов
 
@@ -202,11 +209,11 @@ _Bool syntax_check(char *str, int str_size, Circle *circle_mas, int *circle_mas_
 			{
 				print_wrong_string(str, error_i, i);
         			printf("syntax_check ERROR(строка %d): ожидалась закрывающая скобка ')'\n",column);
-        			for (; str[i] != 10; i++) // до следующей строки
+        			for (; str[i] != '\n'; i++) // до следующей строки
           				if (str[i] == '\0') 
             					return 0;
 				column++;
-				goto bp;
+				continue;
 			}
       			i++; // выйти за скобку
       			column++;
