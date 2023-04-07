@@ -1,16 +1,7 @@
-#include <ctype.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "figures.h"
-
-//======/прототипы функций/==========
-_Bool inp_from_file(int argc, char **argv, char *str, int *strl); // ввод из файла
-void inp_from_kb(char *str, int *strl); // ввод с клавиатуры
-short fig_name_check(char *str, int *i, char *check_mas, int ch_masl); // проверяет имя фигуры
-int num_check(char* str, int *i, int* column, _Bool negative); // проверяет число ли строка					
-void print_wrong_string(char* str, int i_print, int i); // вывод ошибки
-_Bool syntax_check(char *str, int strl, Circle *c_mas, int *c_masl, Triangle *t_mas, int *t_masl);					      
+#include "libgeometry/figures.h"
+#include "libgeometry/lexer.h"
+#include "libgeometry/parser.h"
 
 int main(int argc, char *argv[]) 
 {
@@ -27,6 +18,10 @@ int main(int argc, char *argv[])
   	printf("============================\n");
 	printf("корректно введенные фигуры\n");
   	for (int i = 0; i < circle_mas_size; i++)
+	{
     		printf("circle (%d %d, %f)\n", circle_mas[i].point1.x, circle_mas[i].point1.y, circle_mas[i].radius);
+		printf("perimeter: %f\n", perimeter_of_circle (circle_mas[i].radius));
+		printf("area: %f\n", area_of_circle (circle_mas[i].radius));
+	}
 	return 0;
 }
