@@ -1,8 +1,9 @@
-#include "figures.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "figures.h"
 #include "lexer-parser.h"
 
 //== для num_check
@@ -23,6 +24,7 @@ short fig_name_check(char* str, int* i, char* figure, int figure_size) // про
 	}
 	return 0;
 }
+
 int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float) // проверяет число ли строка
 {
 	int j, k, i_base;
@@ -54,7 +56,8 @@ int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float)
 	}
 	return i_base; // число введено верно i-base- первый байт числа
 }
-void print_wrong_string(char* str, int error_i, int i)
+
+void print_wrong_string(char* str, int error_i, int i, int column, char* error_messange)
 {
 	for (int k = error_i; str[k] != '\n'; k++) // вывод провинившейся перед синтаксисом строки
 		printf("%c", str[k]);
@@ -62,6 +65,7 @@ void print_wrong_string(char* str, int error_i, int i)
 	for (int k = error_i; k < i; k++) // пробелы и стрелочка для указания на ошибку
 		printf(" ");
 	printf("^\n");
+	printf("syntax_check ERROR(строка %d): %s\n", column, error_messange);
 }
 
 _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_size, Triangle* triangle_mas, int* triangle_mas_size)
@@ -77,8 +81,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 			if (is_figure == 2)
 				return 0;
 			if (is_figure == 1) {
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\n", column);
+				print_wrong_string(str, error_i, i, column ,"ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -89,8 +92,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				;	   // пропуск пробелов
 			if (str[i] != '(') //=================== ищем открывающую скобку
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась открывающая скобка '('\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась открывающая скобка '('\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -114,8 +116,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 							circle_mas[*circle_mas_size].point1.y = atoi(&str[num_i]);
 					}
 				} else {
-					print_wrong_string(str, error_i, i);
-					printf("syntax_check ERROR(строка %d): первый аргумент в скобках не число\n", column);
+					print_wrong_string(str, error_i, i, column, "первый аргумент в скобках не число\0");
 					continue;
 				}
 				for (; str[i] == ' '; i++)
@@ -124,8 +125,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ',') //=================== ищем запятую
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась запятая ','\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась запятая ','\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -143,8 +143,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				else
 					circle_mas[*circle_mas_size].radius = atof(&str[num_i]);
 			} else {
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): третий аргумент в скобках не число\n", column);
+				print_wrong_string(str, error_i, i, column, "третий аргумент в скобках не число\0");
 				continue;
 			}
 			for (; str[i] == ' '; i++)
@@ -152,8 +151,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ')') //=================== ищем закрывающую скобку
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась закрывающая скобка ')'\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась закрывающая скобка ')'\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;

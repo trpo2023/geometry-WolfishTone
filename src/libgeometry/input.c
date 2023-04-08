@@ -1,4 +1,5 @@
 #include <stdio.h>
+
 _Bool inp_from_file(int argc, char** argv, char* str, int* str_size) // ввод из файла
 {
 	FILE* input_file;				       // открываемый файл
