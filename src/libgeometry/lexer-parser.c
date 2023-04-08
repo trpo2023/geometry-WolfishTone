@@ -8,11 +8,11 @@
 
 //== для num_check
 #define NUMBERS 10
-#define NEGATIVE 1// если проверяемое число является отрицательным
-#define POSITIVE 0// если проверяемое число является положительным
-#define FLOAT 1// если проверяемое число предполагается рациональным
-#define INT 0// если проверяемое число предполагается целым
-#define ASCII_COOFICIENT 48//предназначено для нахождения кода ASCII символа числа
+#define NEGATIVE 1	    // если проверяемое число является отрицательным
+#define POSITIVE 0	    // если проверяемое число является положительным
+#define FLOAT 1		    // если проверяемое число предполагается рациональным
+#define INT 0		    // если проверяемое число предполагается целым
+#define ASCII_COOFICIENT 48 // предназначено для нахождения кода ASCII символа числа
 
 short fig_name_check(char* str, int* i, char* figure, int figure_size) // проверяет имя фигуры
 {
@@ -81,7 +81,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 			if (is_figure == 2)
 				return 0;
 			if (is_figure == 1) {
-				print_wrong_string(str, error_i, i, column ,"ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
+				print_wrong_string(str, error_i, i, column, "ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
