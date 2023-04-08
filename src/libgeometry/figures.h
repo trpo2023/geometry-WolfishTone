@@ -12,6 +12,6 @@ typedef struct
 typedef struct
 {
 	Coordinates point1; // повторяется
-  	Coordinates point2;
-  	Coordinates point3;
+	Coordinates point2;
+	Coordinates point3;
 } Triangle;
