@@ -1,5 +1,5 @@
-_Bool inp_from_file(int argc, char** argv, char* str, int* str_size);
-void inp_from_kb(char* str, int* str_size);
+#pragma once
+
 short fig_name_check(char* str, int* i, char* figure, int figure_size);
 int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float);
 void print_wrong_string(char* str, int error_i, int i);

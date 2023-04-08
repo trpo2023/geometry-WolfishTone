@@ -1,7 +1,9 @@
 #include <stdio.h>
-#include "libgeometry/figures.h"
-#include "libgeometry/lexer.h"
-#include "libgeometry/parser.h"
+
+#include <libgeometry/figures.h>
+#include <libgeometry/lexer-parser.h>
+#include <libgeometry/arithmetic.h>
+#include <libgeometry/input.h>
 
 int main(int argc, char *argv[]) 
 {
