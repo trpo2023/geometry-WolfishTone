@@ -1,7 +1,7 @@
-.PHONY: all clean test geometry
+.PHONY: all clean test bin/geometry
 all: show
 
-geometry: obj/src/geometry/main.o obj/src/libgeometry/libgeometry.a 	
+bin/geometry: obj/src/geometry/main.o obj/src/libgeometry/libgeometry.a 	
 	gcc -Wall -Werror $^ -o $@
 
 obj/src/geometry/main.o: src/geometry/main.c
@@ -19,7 +19,7 @@ obj/src/libgeometry/input.o: src/libgeometry/input.c
 
 show:
 	@echo сборка приложения geometry:
-	@echo -e '\033[0;32m make geometry \033[0m'
+	@echo -e '\033[0;32m make bin/geometry \033[0m'
 	@echo запуск приложения geometry с тестовыми файлами:
 	@echo -e '\033[0;32m make test \033[0m'
 	@echo удаление объектных файлов:
@@ -27,9 +27,9 @@ show:
 
 test:
 	@echo содержимое тестовых файлов:
-	@cat test/test_file1
-	@cat test/test_file2
-	./geometry test/test_file1 test/test_file2
+	@cat input/test_file1
+	@cat input/test_file2
+	./bin/geometry input/test_file1 input/test_file2
 
 clean::
 	rm */*/*/*.[oad]

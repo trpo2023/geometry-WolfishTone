@@ -7,11 +7,11 @@
 
 //== для num_check
 #define NUMBERS 10
-#define NEGATIVE 1
-#define POSITIVE 0
-#define FLOAT 1
-#define INT 0
-#define ASCII_COOFICIENT 48
+#define NEGATIVE 1// если проверяемое число является отрицательным
+#define POSITIVE 0// если проверяемое число является положительным
+#define FLOAT 1// если проверяемое число предполагается рациональным
+#define INT 0// если проверяемое число предполагается целым
+#define ASCII_COOFICIENT 48//предназначено для нахождения кода ASCII символа числа
 
 short fig_name_check(char* str, int* i, char* figure, int figure_size) // проверяет имя фигуры
 {
