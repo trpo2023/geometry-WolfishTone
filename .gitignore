@@ -1,5 +1,2 @@
-*
-!/**/
-!*.*
-!Makefile
-!test*
+obj/
+bin/

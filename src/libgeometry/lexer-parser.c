@@ -1,61 +1,18 @@
-#include "figures.h"
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "figures.h"
+#include "lexer-parser.h"
+
 //== для num_check
 #define NUMBERS 10
-#define NEGATIVE 1
-#define POSITIVE 0
-#define FLOAT 1
-#define INT 0
-#define ASCII_COOFICIENT 48
-
-_Bool inp_from_file(int argc, char** argv, char* str, int* str_size) // ввод из файла
-{
-	FILE* input_file;				       // открываемый файл
-	for (int arg_index = 1; arg_index < argc; arg_index++) // если передано несколько файлов
-	{
-		if ((input_file = fopen(argv[arg_index], "r")) == 0) // если не удалось открыть файл
-		{
-			printf("inp_from_file ERROR: %s Не удалось открыть файл\n", argv[arg_index]);
-			return 1; // код ошибки 1 не удалось открыть файл
-		}
-		char c;
-		for (;;) {
-			c = fgetc(input_file); // получаем очередной символ.работает как scanf
-			if (c == -1) {
-				if (feof(input_file) != 0)
-					break;
-				else {
-					printf("\ninp_from_file ERROR: Ошибка чтения файла %s\n", argv[1]);
-					break;
-				}
-			}
-			str[*str_size] = c;
-			*str_size += 1;
-		}
-		fclose(input_file); // закрываем файл
-		*str_size += 1;
-		if (arg_index != argc - 1)
-			str[*str_size - 1] = '\n';
-	}
-	str[*str_size] = '\0'; // добавляем в конец символ конца строки, потом понадобится
-	*str_size += 1;
-	return 0;
-}
-
-void inp_from_kb(char* str, int* str_size) // ввод с клавиатуры
-{
-	puts("введите геометрические фигуры через Enter. для окончания ввода нажмите Ctrl+d");
-	for (char a = 0; (a = getchar()) != -1;) {
-		str[*str_size] = a;
-		*str_size += 1;
-	}
-	*str_size += 1;
-	str[*str_size - 1] = '\0'; // добавляем в конец символ конца строки, потом понадобится
-}
+#define NEGATIVE 1	    // если проверяемое число является отрицательным
+#define POSITIVE 0	    // если проверяемое число является положительным
+#define FLOAT 1		    // если проверяемое число предполагается рациональным
+#define INT 0		    // если проверяемое число предполагается целым
+#define ASCII_COOFICIENT 48 // предназначено для нахождения кода ASCII символа числа
 
 short fig_name_check(char* str, int* i, char* figure, int figure_size) // проверяет имя фигуры
 {
@@ -67,6 +24,7 @@ short fig_name_check(char* str, int* i, char* figure, int figure_size) // про
 	}
 	return 0;
 }
+
 int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float) // проверяет число ли строка
 {
 	int j, k, i_base;
@@ -98,7 +56,8 @@ int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float)
 	}
 	return i_base; // число введено верно i-base- первый байт числа
 }
-void print_wrong_string(char* str, int error_i, int i)
+
+void print_wrong_string(char* str, int error_i, int i, int column, char* error_messange)
 {
 	for (int k = error_i; str[k] != '\n'; k++) // вывод провинившейся перед синтаксисом строки
 		printf("%c", str[k]);
@@ -106,6 +65,7 @@ void print_wrong_string(char* str, int error_i, int i)
 	for (int k = error_i; k < i; k++) // пробелы и стрелочка для указания на ошибку
 		printf(" ");
 	printf("^\n");
+	printf("syntax_check ERROR(строка %d): %s\n", column, error_messange);
 }
 
 _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_size, Triangle* triangle_mas, int* triangle_mas_size)
@@ -121,8 +81,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 			if (is_figure == 2)
 				return 0;
 			if (is_figure == 1) {
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\n", column);
+				print_wrong_string(str, error_i, i, column, "ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -133,8 +92,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				;	   // пропуск пробелов
 			if (str[i] != '(') //=================== ищем открывающую скобку
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась открывающая скобка '('\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась открывающая скобка '('\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -158,8 +116,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 							circle_mas[*circle_mas_size].point1.y = atoi(&str[num_i]);
 					}
 				} else {
-					print_wrong_string(str, error_i, i);
-					printf("syntax_check ERROR(строка %d): первый аргумент в скобках не число\n", column);
+					print_wrong_string(str, error_i, i, column, "первый аргумент в скобках не число\0");
 					continue;
 				}
 				for (; str[i] == ' '; i++)
@@ -168,8 +125,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ',') //=================== ищем запятую
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась запятая ','\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась запятая ','\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -187,8 +143,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				else
 					circle_mas[*circle_mas_size].radius = atof(&str[num_i]);
 			} else {
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): третий аргумент в скобках не число\n", column);
+				print_wrong_string(str, error_i, i, column, "третий аргумент в скобках не число\0");
 				continue;
 			}
 			for (; str[i] == ' '; i++)
@@ -196,8 +151,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ')') //=================== ищем закрывающую скобку
 			{
-				print_wrong_string(str, error_i, i);
-				printf("syntax_check ERROR(строка %d): ожидалась закрывающая скобка ')'\n", column);
+				print_wrong_string(str, error_i, i, column, "ожидалась закрывающая скобка ')'\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
