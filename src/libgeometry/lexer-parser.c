@@ -25,7 +25,7 @@ short fig_name_check(char* str, int* i, char* figure, int figure_size) // про
 	return 0;
 }
 
-int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float) // проверяет число ли строка
+int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float) // проверяет число ли строка is_test- для тестов
 {
 	int j, k, i_base;
 	int num_i = (str[*i] == '-' && is_negative) ? (*i + 1) : (*i); // проверка
@@ -68,7 +68,7 @@ void print_wrong_string(char* str, int error_i, int i, int column, char* error_m
 	printf("syntax_check ERROR(строка %d): %s\n", column, error_messange);
 }
 
-_Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_size, Triangle* triangle_mas, int* triangle_mas_size)
+_Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_size, Triangle* triangle_mas, int* triangle_mas_size, _Bool is_test)
 {
 	int column = 1;		   // номер строки
 	int i = 0, num_i, error_i; // i_base- первый байт числа error_i- индекс ошибки в строке
@@ -81,7 +81,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 			if (is_figure == 2)
 				return 0;
 			if (is_figure == 1) {
-				print_wrong_string(str, error_i, i, column, "ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
+				if(!is_test)
+					print_wrong_string(str, error_i, i, column, "ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -92,7 +93,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				;	   // пропуск пробелов
 			if (str[i] != '(') //=================== ищем открывающую скобку
 			{
-				print_wrong_string(str, error_i, i, column, "ожидалась открывающая скобка '('\0");
+				if(!is_test)
+					print_wrong_string(str, error_i, i, column, "ожидалась открывающая скобка '('\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -116,7 +118,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 							circle_mas[*circle_mas_size].point1.y = atoi(&str[num_i]);
 					}
 				} else {
-					print_wrong_string(str, error_i, i, column, "первый аргумент в скобках не число\0");
+					if(!is_test)
+						print_wrong_string(str, error_i, i, column, "первый аргумент в скобках не число\0");
 					continue;
 				}
 				for (; str[i] == ' '; i++)
@@ -125,7 +128,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ',') //=================== ищем запятую
 			{
-				print_wrong_string(str, error_i, i, column, "ожидалась запятая ','\0");
+				if(!is_test)
+					print_wrong_string(str, error_i, i, column, "ожидалась запятая ','\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;
@@ -143,7 +147,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				else
 					circle_mas[*circle_mas_size].radius = atof(&str[num_i]);
 			} else {
-				print_wrong_string(str, error_i, i, column, "третий аргумент в скобках не число\0");
+				if(!is_test)
+					print_wrong_string(str, error_i, i, column, "третий аргумент в скобках не число\0");
 				continue;
 			}
 			for (; str[i] == ' '; i++)
@@ -151,7 +156,8 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ')') //=================== ищем закрывающую скобку
 			{
-				print_wrong_string(str, error_i, i, column, "ожидалась закрывающая скобка ')'\0");
+				if(!is_test)
+					print_wrong_string(str, error_i, i, column, "ожидалась закрывающая скобка ')'\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
 						return 0;

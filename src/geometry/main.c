@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 	int circle_mas_size = 0, triangle_mas_size = 0; // размеры массивов с индексами объектов фигур
 	Circle circle_mas[100];
 	Triangle triangle_mas[100];
-	syntax_check(str, str_size, circle_mas, &circle_mas_size, triangle_mas, &triangle_mas_size);
+	syntax_check(str, str_size, circle_mas, &circle_mas_size, triangle_mas, &triangle_mas_size, 0);
 	printf("============================\n");
 	printf("корректно введенные фигуры\n");
 	for (int i = 0; i < circle_mas_size; i++) {
