@@ -81,7 +81,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 			if (is_figure == 2)
 				return 0;
 			if (is_figure == 1) {
-				if(!is_test)
+				if (!is_test)
 					print_wrong_string(str, error_i, i, column, "ошибка в названии фигуры. Ожидалосось: \"circle\", \"triangle\"\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
@@ -93,7 +93,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				;	   // пропуск пробелов
 			if (str[i] != '(') //=================== ищем открывающую скобку
 			{
-				if(!is_test)
+				if (!is_test)
 					print_wrong_string(str, error_i, i, column, "ожидалась открывающая скобка '('\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
@@ -118,7 +118,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 							circle_mas[*circle_mas_size].point1.y = atoi(&str[num_i]);
 					}
 				} else {
-					if(!is_test)
+					if (!is_test)
 						print_wrong_string(str, error_i, i, column, "первый аргумент в скобках не число\0");
 					continue;
 				}
@@ -128,7 +128,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ',') //=================== ищем запятую
 			{
-				if(!is_test)
+				if (!is_test)
 					print_wrong_string(str, error_i, i, column, "ожидалась запятая ','\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
@@ -147,7 +147,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 				else
 					circle_mas[*circle_mas_size].radius = atof(&str[num_i]);
 			} else {
-				if(!is_test)
+				if (!is_test)
 					print_wrong_string(str, error_i, i, column, "третий аргумент в скобках не число\0");
 				continue;
 			}
@@ -156,7 +156,7 @@ _Bool syntax_check(char* str, int str_size, Circle* circle_mas, int* circle_mas_
 
 			if (str[i] != ')') //=================== ищем закрывающую скобку
 			{
-				if(!is_test)
+				if (!is_test)
 					print_wrong_string(str, error_i, i, column, "ожидалась закрывающая скобка ')'\0");
 				for (; str[i] != '\n'; i++) // до следующей строки
 					if (str[i] == '\0')
