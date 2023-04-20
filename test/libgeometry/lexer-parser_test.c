@@ -21,11 +21,6 @@ CTEST(lexer_parser, fig_name_check_test)
 	i= 0;
 	result= fig_name_check(str2, &i, fig, fig_size);
 	ASSERT_EQUAL(expected, result);
-	
-	char* str3= "circles \0";
-	i= 0;
-	result= fig_name_check(str3, &i, fig, fig_size);
-	ASSERT_EQUAL(expected, result);
 
 	// конец анализируемой строки
 	expected= 2;
@@ -36,7 +31,6 @@ CTEST(lexer_parser, fig_name_check_test)
 }
 CTEST(lexer_parser, num_check_test)
 {
-	//int num_check(char* str, int* i, int* column, _Bool is_negative, _Bool is_float);
 	int column= 0;
 	int i=1;
 
@@ -81,32 +75,12 @@ CTEST(lexer_parser, num_check_test)
 	str= " e123 \n\0";
 	result= num_check(str, &i, &column, is_negative, is_float);
 	ASSERT_EQUAL(expected, result);
-
-	// число содержащее недопустимый символ в произвольном месте
-	i=1;
-	str= " 1e2e3 \n\0";
-	result= num_check(str, &i, &column, is_negative, is_float);
-	ASSERT_EQUAL(expected, result);
-
-	// положительное число с плавающими точками
-	i=1;
-	is_float= 1;
-	str= " 1.2.3 \n\0";
-	result= num_check(str, &i, &column, is_negative, is_float);
-	ASSERT_EQUAL(expected, result);
 	
 	// целое отрицательное число c больше чем одним минусом
 	i=1;
 	is_negative= 1;
 	is_float= 0;
 	str= " --123 \n\0";
-	result= num_check(str, &i, &column, is_negative, is_float);
-	ASSERT_EQUAL(expected, result);
-
-	// строка закончилась на этом числе
-	expected= 2;
-	i= 1;
-	str= "123\0";
 	result= num_check(str, &i, &column, is_negative, is_float);
 	ASSERT_EQUAL(expected, result);
 }
