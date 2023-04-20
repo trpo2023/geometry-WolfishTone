@@ -2,7 +2,7 @@
 all: show
 
 bin/geometry: obj/src/geometry/main.o obj/src/libgeometry/libgeometry.a 	
-	gcc -Wall -Werror $^ -o $@
+	gcc -Wall -Werror $^ -o $@ -lm
 
 obj/src/geometry/main.o: src/geometry/main.c
 	gcc -Wall -Werror -c -MMD $<  -o $@ -I src
@@ -13,14 +13,14 @@ obj/src/libgeometry/libgeometry.a: obj/src/libgeometry/lexer-parser.o obj/src/li
 obj/src/libgeometry/lexer-parser.o: src/libgeometry/lexer-parser.c
 	gcc -Wall -Werror -c -MMD $< -o $@
 obj/src/libgeometry/arithmetic.o: src/libgeometry/arithmetic.c
-	gcc -Wall -Werror -c -MMD $< -o $@
+	gcc -Wall -Werror -c -MMD $< -o $@ #-lm
 obj/src/libgeometry/input.o: src/libgeometry/input.c
 	gcc -Wall -Werror -c -MMD $< -o $@
 
 
 
 bin/geometry_test: obj/test/geometry/main.o obj/test/libgeometry/lexer-parser_test.o obj/test/libgeometry/arithmetic_test.o obj/src/libgeometry/libgeometry.a
-	gcc -Wall -Werror $^ -o $@
+	gcc -Wall -Werror $^ -o $@ -lm
 
 obj/test/geometry/main.o: test/geometry/main.c
 	gcc -Wall -Werror -c -MMD $<  -o $@ -I .
@@ -29,7 +29,7 @@ obj/test/libgeometry/lexer-parser_test.o: test/libgeometry/lexer-parser_test.c
 	gcc -Wall -Werror -c -MMD $< -o $@ -I .
 
 obj/test/libgeometry/arithmetic_test.o: test/libgeometry/arithmetic_test.c
-	gcc -Wall -Werror -c -MMD $< -o $@ -I .
+	gcc -Wall -Werror -c -MMD $< -o $@ -I . 
 
 show:
 	@echo сборка приложения geometry:
