@@ -14,3 +14,9 @@ jobs:
 
       - name: Build application
         run: make bin/geometry
+
+      - name: Build tests
+        run: make bin/geometry_test
+
+      - name: tests
+        run: make test
